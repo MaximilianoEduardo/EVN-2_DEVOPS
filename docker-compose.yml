@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # Servicio de nuestro Microservicio DevOps
+  app:
+    image: microservicio-evaluacion:latest
+    container_name: devops_microservice_app
+    ports:
+      - "8080:8080"
+    
+    # POLÍTICA DE REINICIO (Garantiza estabilidad ante fallos como exige el IE5)
+    restart: always
+    
+    # LÍMITES DE RECURSOS (Garantiza la eficiencia y escalabilidad de la solución)
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'       # Máximo el 50% de un núcleo de CPU
+          memory: 512M       # Máximo 512 Megabytes de Memoria RAM
+        reservations:
+          cpus: '0.25'       # Reserva garantizada de 25% de un núcleo
+          memory: 256M       # Reserva garantizada de 256 Megabytes de RAM
+    
+    # Configuración de Red interna para aislar el contenedor
+    networks:
+      - devops-network
+
+networks:
+  devops-network:
+    driver: bridge
